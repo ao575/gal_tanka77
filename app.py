@@ -60,16 +60,16 @@ def render_tanka(selected: list[dict]) -> str:
     for label, entry in zip(mora_labels, selected):
         word = entry["word"]
         cols_html += f"""
-<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
-  <span style="font-size:0.65rem;color:#b0a888;letter-spacing:0.1em;">{label}</span>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:0;">
+  <span style="font-size:clamp(0.45rem,2vw,0.65rem);color:#b0a888;letter-spacing:0.05em;">{label}</span>
   <div style="
     writing-mode:vertical-rl;
     text-orientation:upright;
-    font-size:2rem;
+    font-size:clamp(1rem,5.5vw,2rem);
     font-weight:bold;
     color:#2c4a2e;
-    padding:4px 6px;
-    letter-spacing:0.2em;
+    padding:2px 4px;
+    letter-spacing:0.15em;
     line-height:1.4;
   ">{word}</div>
 </div>"""
@@ -78,17 +78,19 @@ def render_tanka(selected: list[dict]) -> str:
   flex-direction:row-reverse;
   justify-content:center;
   align-items:flex-start;
-  gap:24px;
-  padding:28px 24px;
+  gap:clamp(6px,2.5vw,24px);
+  padding:clamp(14px,3vw,28px) clamp(10px,2.5vw,24px);
   background:linear-gradient(135deg,#faf7f0,#f2ede2);
   border-radius:16px;
   border:1px solid #e0d4b8;
+  width:100%;
+  box-sizing:border-box;
 ">{cols_html}</div>"""
 
 
 def tanka_height(selected: list[dict]) -> int:
     max_chars = max(len(e["word"]) for e in selected)
-    return 100 + max_chars * 44
+    return max(260, 80 + max_chars * 44)
 
 
 # ══════════════════════════════
@@ -124,7 +126,6 @@ st.title("🎋 ギャル短歌カオス")
 # ══════════════════════════════
 # ガチャエリア
 # ══════════════════════════════
-st.header("#ギャル短歌七七")
 st.caption("このウェブアプリは、愉快班様の#ギャル短歌七七のファン創作物です。")
 
 pool_5 = [w for w in words if w["mora"] == 5]
